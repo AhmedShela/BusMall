@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+main{
+    margin-left: 25%;
+    margin-right: 20%;
+}
+#divIMG{
+    /* margin: 2%; */
+    display: flex;
+}
+.displayImg{
+    width: 220px;
+    height: 220px;
+    border: 1px gray solid;
+    margin: 0.5%;
+    position: relative;
+    /* z-index: -2; */
+}
+.displayImg:hover{
+    border: 4px solid;
+    border-color: red;
+    cursor: pointer;
+    -webkit-transition: border-color 2s ease-out;
+    -moz-transition: border-color 2s ease-out;
+    -o-transition: border-color 2s ease-out;
+    transition: border-color 2.5s ease-out;
+}
+main h1{
+    margin: 5% 20%;
+}
+main p{
+    margin: 5% 15%;
+}
+#divResult{
+    margin: 10% 15%;
+
+}
+#divResult h2{
+    font-size: 150%;
+    margin: 1%;
+}
+#divResult li{
+    line-height: 200%;
+    font-size: 120%;
+}
+/*********************************************************/
+body{
+    background-color: #f6f6f6;
+}
+#navHeader{
+    background-color: rgb(73, 197, 77);
+    display: flex;
+}
+#searchBox{
+    position: relative;
+    right: -42%;
+    margin: 2% 0%;
+}
+.liheader{
+    position: relative;
+    display: inline-block;
+    margin-left: 10%;
+    margin-top: 8%;
+    font-size: 150%;
+}
+a{
+    text-decoration: none;
+    color: maroon;
+}
+#navHeader ul{
+    position: relative;
+    width: 20%;
+    right: -40%;;
+}
+h1{
+    font-size: 300%;
+    margin: 1%;
+    font-family: 'Bangers', cursive;
+    color: maroon;
+}
+
