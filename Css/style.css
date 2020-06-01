@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 main{
-    margin-left: 25%;
+    margin-left: 15%;
     margin-right: 20%;
 }
 #divIMG{
@@ -8,7 +8,7 @@ main{
     display: flex;
 }
 .displayImg{
-    width: 220px;
+    width: 320px;
     height: 220px;
     border: 1px gray solid;
     margin: 0.5%;
@@ -76,5 +76,9 @@ h1{
     margin: 1%;
     font-family: 'Bangers', cursive;
     color: maroon;
+}
+#divMyChart{
+    width: 70%;
+    margin-left: 15%;
 }
 
