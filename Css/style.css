@@ -84,3 +84,7 @@ h1{
 #myPieChart{
     margin-top: 10%;
 }
+#h1PieChartTitle{display:  none;}
+hr{
+    margin-top: 5%;
+}
