@@ -44,7 +44,30 @@ var products = [
     'water-can',
     'wine-glass'
 ];
-var colors = ['rgb(255, 99, 132)','rgb(255,0,0)','rgb(128,0,0)','rgb(255,255,0)','rgb(34,139,34)','rgb(0,128,128)','rgb(25,25,112)','rgb(0,0,255)','rgb(72,61,139)','rgb(255,0,255)','rgb(255,20,147)','rgb(139,69,19)','rgb(188,143,143)','rgb(47,79,79)','rgb(46,139,87)','rgb(50,205,50)','rgb(107,142,35)','rgb(154,205,50)','rgb(205,92,92)','rgb(255,215,0)','rgb(255,99,71)(255,99,71)','rgb(165,42,42)'];
+var colors = [
+    'rgb(255, 99, 132)',
+    'rgb(255,0,0)',
+    'rgb(128,0,0)',
+    'rgb(255,255,0)',
+    'rgb(34,139,34)',
+    'rgb(0,128,128)',
+    'rgb(25,25,112)',
+    'rgb(0,0,255)',
+    'rgb(72,61,139)',
+    'rgb(255,0,255)',
+    'rgb(255,20,147)',
+    'rgb(139,69,19)',
+    'rgb(188,143,143)',
+    'rgb(47,79,79)',
+    'rgb(46,139,87)',
+    'rgb(50,205,50)',
+    'rgb(107,142,35)',
+    'rgb(154,205,50)',
+    'rgb(205,92,92)',
+    'rgb(255,215,0)',
+    'rgb(255,99,71)(255,99,71)',
+    'rgb(165,42,42)'
+];
 var totalClicks = [];
 var totalViews = [];
 var desiered = [];
@@ -143,106 +166,153 @@ function renderResult() {
         seassionEnd = true;
     }
 }
-// function to fill tow arrais with data so we use it later in chart
-function fillDataSets() {
-    desiered = [];
-    totalClicks =[];
-    totalViews =[];
-    for (let i = 0; i < Product.all.length; i++) {
-        totalClicks.push(Product.all[i].clicks);
-        totalViews.push(Product.all[i].views);
-        desiered.push(Product.all[i].views*Product.all[i].clicks)
+var totalOfViewsArr = [];
+var totalOfClicksArr = [];
+function getData() {
+    var mynum = getLastAttemptId();
+    for (let i = 1; i < mynum; i++) {
+        var storedProduct = JSON.parse(localStorage.getItem(String(i)));
+        // console.log('totalOfClicksArr : ', totalOfClicksArr);
+        // console.log(totalOfClicksArr.length);
+        // console.log('stored arr : ',storedProduct);
+        
+        
+        if (totalOfClicksArr.length < 1) {
+            for (let j = 0; j < storedProduct.length; j++) {
+                totalOfClicksArr.push(storedProduct[j].clicks);
+                totalOfViewsArr.push(storedProduct[j].views);
+            }
+        } else {
+            for (let j = 0; j < storedProduct.length; j++) {
+                totalOfClicksArr[j] += storedProduct[j].clicks;
+                totalOfViewsArr[j] += storedProduct[j].views;
+            }
+        }
     }
+    console.log(totalOfClicksArr);
 }
-// Render chart
-function renderChart() {
-    fillDataSets();
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var ctxP = document.getElementById('myPieChart').getContext('2d');
-    // PieChart
-    // console.log('array is : ',desiered);
-    var pieChart = new Chart(ctxP, { // The type of chart we want to create
-        type: 'pie',
-        // The data for our dataset
-        data: {
-            labels: products,
-            datasets: [
-                {
-                    label: 'Clicks',
-                    backgroundColor: colors,
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: desiered
-                }
-            ]
-        },
-
-        // Configuration options go here
-        options: {}
-    });
-    // Bar Chart
-    var chart = new Chart(ctx, { // The type of chart we want to create
-        type: 'bar',
-        // The data for our dataset
-        data: {
-            labels: products,
-            title: {
-                display: true,
-                text: 'A Chart discribe the most wanted products'
+    // function to fill tow arrais with data so we use it later in chart
+    function fillDataSets() {
+        getData()
+        desiered = [];
+        totalClicks = [];
+        totalViews = [];
+        for (let i = 0; i < Product.all.length; i++) {
+            totalClicks.push(Product.all[i].clicks);
+            totalViews.push(Product.all[i].views);
+            // desiered.push(Product.all[i].views * Product.all[i].clicks)
+            desiered.push(totalOfViewsArr[i] * totalOfClicksArr[i]);
+        }
+    }
+    // Render chart
+    function renderChart() {
+        fillDataSets();
+        var ctx = document.getElementById('myChart').getContext('2d');
+        document.getElementById('h1PieChartTitle').style.display = 'block'
+        var ctxP = document.getElementById('myPieChart').getContext('2d');
+        // PieChart
+        // console.log('array is : ',desiered);
+        var pieChart = new Chart(ctxP, { // The type of chart we want to create
+            type: 'pie',
+            // The data for our dataset
+            data: {
+                labels: products,
+                datasets: [
+                    {
+                        label: 'Clicks',
+                        backgroundColor: colors,
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: desiered
+                    }
+                ]
             },
-            datasets: [
-                {
-                    label: 'Clicks',
-                    // backgroundColor: 'rgb(255, 99, 132)',
-                    backgroundColor: colors,
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: totalClicks
-                }, {
-                    label: 'Views',
-                    backgroundColor: 'rgb(73, 197, 77)',
-                    borderColor: 'rgb(73, 197, 77)',
-                    data: totalViews
-                }
-            ]
-        },
 
-        // Configuration options go here
-        options: {}
-    });
-}
+            // Configuration options go here
+            options: {}
+        });
+        // Bar Chart
+        var chart = new Chart(ctx, { // The type of chart we want to create
+            type: 'bar',
+            // The data for our dataset
+            data: {
+                labels: products,
+                title: {
+                    display: true,
+                    text: 'A Chart discribe the most wanted products'
+                },
+                datasets: [
+                    {
+                        label: 'Clicks',
+                        // backgroundColor: 'rgb(255, 99, 132)',
+                        backgroundColor: colors,
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: totalClicks
+                    }, {
+                        label: 'Views',
+                        backgroundColor: 'rgb(73, 197, 77)',
+                        borderColor: 'rgb(73, 197, 77)',
+                        data: totalViews
+                    }
+                ]
+            },
 
-// click handler function
-function handleClick(event) {
-    if (rounds < seassionLength) {
-        leftProduct.views += 1;
-        midProduct.views += 1;
-        rightProduct.views += 1;
-        if (event.target.id == 'leftImg') {
-            leftProduct.clicks += 1
-            rounds += 1;
-
-            randomRender();
-
-        } else if (event.target.id == 'rightImg') {
-            rightProduct.clicks += 1
-            rounds += 1;
-
-            randomRender();
-
-        } else if (event.target.id == 'midImg') {
-            midProduct.clicks += 1
-            rounds += 1;
-
-            randomRender();
-        } else {}
-
-    } else {
-        renderResult();
-        renderChart();
+            // Configuration options go here
+            options: {}
+        });
     }
-}
 
-// //////////// MainCode ///////////////
+    // click handler function
+    function handleClick(event) {
+        if (rounds < seassionLength - 1) {
+            leftProduct.views += 1;
+            midProduct.views += 1;
+            rightProduct.views += 1;
+            if (event.target.id == 'leftImg') {
+                leftProduct.clicks += 1
+                rounds += 1;
 
-divImg.addEventListener('click', handleClick);
-createObjects();
-randomRender();
+                randomRender();
+
+            } else if (event.target.id == 'rightImg') {
+                rightProduct.clicks += 1
+                rounds += 1;
+
+                randomRender();
+
+            } else if (event.target.id == 'midImg') {
+                midProduct.clicks += 1
+                rounds += 1;
+
+                randomRender();
+            } else {}
+
+        } else {
+            if (rounds == seassionLength - 1) {
+                console.log(`${rounds} and ${seassionLength}`);
+                storeAttemptData();
+                renderResult();
+                renderChart();
+                rounds += 1;
+            }
+        }
+    }
+    function getLastAttemptId() {
+        var lasAttempt = localStorage.getItem('attemptId'); // in Json Format
+        console.log(lasAttempt);
+        if (typeof lasAttempt == 'undefined' || lasAttempt == null) {
+            return 1;
+        }
+        return(Number(JSON.parse(lasAttempt)) + 1);
+    }
+    function storeAttemptData() {
+        var atteptId = getLastAttemptId();
+        localStorage.setItem('attemptId', atteptId)
+        localStorage.setItem(String(atteptId), JSON.stringify(Product.all));
+    }
+
+    // //////////// MainCode ///////////////
+
+    divImg.addEventListener('click', handleClick);
+    createObjects();
+    randomRender();
+    
